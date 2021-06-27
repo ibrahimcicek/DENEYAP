@@ -1,5 +1,5 @@
 //27.06.2021 Tarihinde Githuba taşınmıştır.
-
+// Buraya kadar olan kodlar korunup yeni yapı için bir adet brunch eklenmiştir.
 #include <SoftwareSerial.h>
 #include <ArduinoJson.h>
 #include <FastLED.h>
