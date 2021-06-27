@@ -178,3 +178,5 @@ Serial.println(Port);
 Serial.println(value);
 
 }
+
+//Fonksiyonların geliştitilmesine LED modülü ile devam edilecektir.
