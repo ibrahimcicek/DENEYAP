@@ -90,9 +90,9 @@ void execute(String Json_input) {
   deserializeJson(doc, Json_input);
   variant_doc = doc.as<JsonVariant>();
 
-  //  Serial.println(variant_doc.size());
-  //  Serial.println("variant veri: ");
-  //  Serial.println(variant_doc.as<String>());
+    Serial.println(variant_doc.size());
+    Serial.println("variant veri: ");
+    Serial.println(variant_doc.as<String>());
 
 
 
@@ -115,6 +115,7 @@ void execute(String Json_input) {
     if ((variant_doc[i]["t"]) == "end")
     {
       // Serial.println(F("t=end durumu"));
+      break;
     }
   }
 }
