@@ -1,5 +1,5 @@
 //27.06.2021 Tarihinde Githuba taşınmıştır.
-
+// Buraya kadar olan kodlar korunup yeni yapı için bir adet brunch eklenmiştir.
 #include <SoftwareSerial.h>
 #include <ArduinoJson.h>
 #include <FastLED.h>
@@ -16,8 +16,11 @@ CRGB leds[NUM_LEDS];
 SoftwareSerial BTSerial(TxD, RxD);
 
 DynamicJsonDocument doc(2048);
+DynamicJsonDocument doc2(512);
+//StaticJsonDocument<1024> docStatic;
 JsonVariant variant_doc;
 JsonVariant variant_doc2;
+JsonVariant variant_doc3;
 //JsonVariant variant_doc3;
 // Json variant olusturmayi dene
 //DynamicJsonDocument doc_recursive(1024);
@@ -90,9 +93,9 @@ void execute(String Json_input) {
   deserializeJson(doc, Json_input);
   variant_doc = doc.as<JsonVariant>();
 
-  //  Serial.println(variant_doc.size());
-  //  Serial.println("variant veri: ");
-  //  Serial.println(variant_doc.as<String>());
+    Serial.println(variant_doc.size());
+    Serial.println("variant veri: ");
+    Serial.println(variant_doc.as<String>());
 
 
 
@@ -115,6 +118,7 @@ void execute(String Json_input) {
     if ((variant_doc[i]["t"]) == "end")
     {
       // Serial.println(F("t=end durumu"));
+      break;
     }
   }
 }
@@ -144,7 +148,13 @@ void forever_loop() {
 
 
 }
+void distance_sensor(String operation, String Port, String value){
+Serial.println(F("distance..."));
+Serial.println(operation);
+Serial.println(Port);
+Serial.println(value);
 
+}
 void conditions_function(int condition_number) {
   Serial.println(F("c fonksiyonu"));
   Serial.println(variant_doc2[condition_number]["c"].as<String>());
@@ -159,24 +169,60 @@ void conditions_function(int condition_number) {
   //Serial.println (doc_recursive.as<String>());
 }
 
+void conditions_function_data()
+{
+  Serial.println("c String function");
+  Serial.println(doc2["c"].as<String>());
+}
 
 void if_functions(int if_number) {
   Serial.println(F("f fonksiyonu"));
   Serial.println(variant_doc2[if_number]["f"].as<String>());
 }
-
-
+void else_functions_recursive(String else_recursive_data)
+{
+  deserializeJson(doc2, else_recursive_data);
+  
+  if(doc2.size() > 0){
+    else_functions_recursive(doc2["e"]);
+    }
+  for(int i=0;i<doc2.size(); i++)
+  {
+    
+  }
+  
+}
 void else_functions(int else_number) {
-  Serial.println(F("e fonksiyonu"));
-  Serial.println(variant_doc2[else_number]["e"].as<String>());
+  Serial.println(F("e fonksiyonu ve else variables..."));
+  String elseVariables = variant_doc2[else_number]["e"].as<String>();
+  Serial.println(elseVariables);
+  doc2.clear();
+  deserializeJson(doc2, elseVariables);
+  Serial.println("doc 2 olusturuldu...");
+  for(int i = 0; i < doc2.size(); i++){
+    
+  if(doc2[i]["t"] == "b"){
+  else_functions_recursive(doc2["e"]);
+  }
+}
 }
 
-void distance_sensor(String operation, String Port, String value){
-Serial.println(F("distance..."));
-Serial.println(operation);
-Serial.println(Port);
-Serial.println(value);
-
+/*
+void else_functions(int else_number) {
+  Serial.println(F("e fonksiyonu ve else variables..."));
+  String elseVariables = variant_doc2[else_number]["e"].as<String>();
+  Serial.println(elseVariables);
+  variant_doc3 = variant_doc2[else_number]["e"];
+  Serial.println(F("docStatic c:"));
+  for(int i = 0; i < variant_doc3.size(); i++){
+  Serial.println(variant_doc3[i]["c"].as<String>());
+  Serial.println(F("docStatic f:"));
+  Serial.println(variant_doc3[i]["f"].as<String>());
+  Serial.println(F("docStatic e:"));
+  Serial.println(variant_doc3[i]["e"].as<String>());
+  }
 }
+*/
+
 
 //Fonksiyonların geliştitilmesine LED modülü ile devam edilecektir.
